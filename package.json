@@ -1,0 +1,29 @@
+{
+  "name": "EXT-Motion",
+  "version": "1.0.0",
+  "rev": "221030",
+  "description": "Motion webcam detector plugin",
+  "main": "EXT-Motion.js",
+  "scripts": {
+    "preinstall": "installer/preinstall.sh",
+    "postinstall": "installer/postinstall.sh",
+    "update": "installer/update.sh"
+  },
+  "keywords": [
+    "magicmirror",
+    "plugin",
+    "screen",
+    "EXT",
+    "GoogleAssistant"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-Motion"
+  },
+  "author": "bugsounet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://forum.bugsounet.fr/"
+  },
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-Motion"
+}
