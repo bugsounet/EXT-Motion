@@ -8,7 +8,7 @@ Module.register("EXT-Motion", {
   defaults: {
     debug: false,
     captureIntervalTime: 1000,
-    scoreThreshold: 20,
+    scoreThreshold: 100,
     deviceId: null
   },
 
