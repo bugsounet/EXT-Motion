@@ -36,9 +36,17 @@ Module.register("EXT-Motion", {
           DiffCamEngine.stop()
         }
         break
+      case "EXT_MOTION-DESTROY":
+        if (DiffCamEngine.initialized) DiffCamEngine.destroy()
+        break
       case "EXT_MOTION-START":
         if (DiffCamEngine.initialized && !DiffCamEngine.started) {
           DiffCamEngine.start()
+        }
+        break
+      case "EXT_MOTION-INIT":
+        if (!DiffCamEngine.initialized && !DiffCamEngine.started) {
+          this.camEngine()
         }
         break
     }
@@ -78,6 +86,10 @@ Module.register("EXT-Motion", {
       stopCompleteCallback: () => {
         Log.info("[MOTION] Motion is now Stopped")
         this.sendSocketNotification("STOPPED")
+      },
+      destroyCompleteCallback: () => {
+        Log.info("[MOTION] Motion is now Destroyed")
+        this.sendSocketNotification("DESTROYED")
       },
       captureCallback: ({ score, hasMotion }) => {
         if (hasMotion) {

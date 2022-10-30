@@ -26,6 +26,9 @@ module.exports = NodeHelper.create({
       case "STOPPED":
         log("Stopped!")
         break
+      case "DESTROYED":
+        log("Destroyed!")
+        break
       case "ERROR":
         console.error("[MOTION] DiffCamEngine initialize failed: " + payload)
         break
