@@ -82,14 +82,17 @@ Module.register("EXT-Motion", {
       startCompleteCallback: () => {
         Log.info("[MOTION] Motion is now Started")
         this.sendSocketNotification("STARTED")
+        this.sendNotification("EXT_MOTION-STARTED")
       },
       stopCompleteCallback: () => {
         Log.info("[MOTION] Motion is now Stopped")
         this.sendSocketNotification("STOPPED")
+        this.sendNotification("EXT_MOTION-STOPPED")
       },
       destroyCompleteCallback: () => {
         Log.info("[MOTION] Motion is now Destroyed")
         this.sendSocketNotification("DESTROYED")
+        this.sendNotification("EXT_MOTION-STOPPED")
       },
       captureCallback: ({ score, hasMotion }) => {
         if (hasMotion) {
