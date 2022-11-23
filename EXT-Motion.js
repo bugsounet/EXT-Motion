@@ -32,22 +32,16 @@ Module.register("EXT-Motion", {
         if (sender.name == "MMM-GoogleAssistant") this.sendNotification("EXT_HELLO", this.name)
         break
       case "EXT_MOTION-STOP":
-        if (DiffCamEngine.initialized && DiffCamEngine.started) {
-          DiffCamEngine.stop()
-        }
+        if (DiffCamEngine.initialized && DiffCamEngine.started) DiffCamEngine.stop()
         break
       case "EXT_MOTION-DESTROY":
         if (DiffCamEngine.initialized) DiffCamEngine.destroy()
         break
       case "EXT_MOTION-START":
-        if (DiffCamEngine.initialized && !DiffCamEngine.started) {
-          DiffCamEngine.start()
-        }
+        if (DiffCamEngine.initialized && !DiffCamEngine.started) DiffCamEngine.start()
         break
       case "EXT_MOTION-INIT":
-        if (!DiffCamEngine.initialized && !DiffCamEngine.started) {
-          this.camEngine()
-        }
+        if (!DiffCamEngine.initialized && !DiffCamEngine.started) this.camEngine()
         break
     }
   },
