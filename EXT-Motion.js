@@ -28,7 +28,7 @@ Module.register("EXT-Motion", {
         this.sendSocketNotification("INIT", this.config)
         this.camEngine()
         break
-      case "GAv4_READY":
+      case "GAv5_READY":
         if (sender.name == "MMM-GoogleAssistant") this.sendNotification("EXT_HELLO", this.name)
         break
       case "EXT_MOTION-STOP":
