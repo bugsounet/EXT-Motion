@@ -1,7 +1,7 @@
 {
   "name": "EXT-Motion",
-  "version": "1.0.0",
-  "rev": "221121",
+  "version": "1.0.1",
+  "rev": "230312",
   "description": "Motion webcam detector plugin",
   "main": "EXT-Motion.js",
   "scripts": {
