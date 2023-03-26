@@ -1,8 +1,10 @@
 /*******************
-*  EXT-Motion v1.0 *
+*  EXT-Motion v1.1 *
 *  Bugsounet       *
 *  10/2022         *
 *******************/
+
+var logMOTION = (...args) => { /* do nothing */ }
 
 Module.register("EXT-Motion", {
   defaults: {
@@ -16,21 +18,26 @@ Module.register("EXT-Motion", {
     if (this.data.position) this.data.position = undefined
     if (this.config.captureIntervalTime < 1000) this.config.captureIntervalTime = 1000
     if (this.config.scoreThreshold < 20) this.config.scoreThreshold = 20
+    if (this.config.debug) logMOTION = (...args) => { console.log("[MOTION]", ...args) }
+    this.ready = false
   },
 
   getScripts: function () {
-    return ["/modules/EXT-Motion/lib/diff-cam-engine.js"]
+    return ["/modules/EXT-Motion/components/diff-cam-engine.js"]
   },
 
   notificationReceived: function (notification, payload, sender) {
-    switch(notification) {
-      case "DOM_OBJECTS_CREATED":
+    if (notification == "GW_READY") {
+      if (sender.name == "Gateway") {
         this.sendSocketNotification("INIT", this.config)
         this.camEngine()
-        break
-      case "GAv4_READY":
-        if (sender.name == "MMM-GoogleAssistant") this.sendNotification("EXT_HELLO", this.name)
-        break
+        this.ready = true
+        this.sendNotification("EXT_HELLO", this.name)
+      }
+    }
+    if (!this.ready) return
+
+    switch(notification) {
       case "EXT_MOTION-STOP":
         if (DiffCamEngine.initialized && DiffCamEngine.started) DiffCamEngine.stop()
         break
@@ -61,12 +68,12 @@ Module.register("EXT-Motion", {
       motionCanvas: canvas,
       scoreThreshold: this.config.scoreThreshold,
       initSuccessCallback: () => {
-        Log.info("[MOTION] DiffCamEngine init successful.")
+        logMOTION("DiffCamEngine init successful.")
         this.sendSocketNotification("INITIALIZED")
         DiffCamEngine.start()
       },
       initErrorCallback: (error) => {
-        Log.error("[MOTION] DiffCamEngine init failed: " + error)
+        console.error("[MOTION] DiffCamEngine init failed: " + error)
         this.sendSocketNotification("ERROR", error.toString())
         this.sendNotification("EXT_ALERT", {
           message: "EXT-Motion init failed!",
@@ -74,23 +81,23 @@ Module.register("EXT-Motion", {
         })
       },
       startCompleteCallback: () => {
-        Log.info("[MOTION] Motion is now Started")
+        logMOTION("Motion is now Started")
         this.sendSocketNotification("STARTED")
         this.sendNotification("EXT_MOTION-STARTED")
       },
       stopCompleteCallback: () => {
-        Log.info("[MOTION] Motion is now Stopped")
+        logMOTION("Motion is now Stopped")
         this.sendSocketNotification("STOPPED")
         this.sendNotification("EXT_MOTION-STOPPED")
       },
       destroyCompleteCallback: () => {
-        Log.info("[MOTION] Motion is now Destroyed")
+        logMOTION("Motion is now Destroyed")
         this.sendSocketNotification("DESTROYED")
         this.sendNotification("EXT_MOTION-STOPPED")
       },
       captureCallback: ({ score, hasMotion }) => {
         if (hasMotion) {
-          Log.info("[MOTION] Motion detected, score " + score)
+          logMOTION("Motion detected, score " + score)
           this.sendNotification("EXT_SCREEN-WAKEUP")
           this.sendSocketNotification("DETECTED", score)
         }
