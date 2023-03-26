@@ -27,10 +27,5 @@
   "bugs": {
     "url": "https://forum.bugsounet.fr/"
   },
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-Motion",
-  "dependencies": {
-    "check-node-version": "^4.2.1",
-    "glob": "^9.3.2",
-    "minify": "^9.2.0"
-  }
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-Motion"
 }
