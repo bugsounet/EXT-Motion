@@ -1,6 +1,6 @@
 /**********************************
-* node_helper for EXT-Motion v1.0 *
-* BuGsounet ©10/22                *
+* node_helper for EXT-Motion v1.1 *
+* BuGsounet ©03/23                *
 **********************************/
 
 const NodeHelper = require("node_helper")
