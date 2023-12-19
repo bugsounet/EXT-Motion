@@ -27,8 +27,8 @@ Module.register("EXT-Motion", {
   },
 
   notificationReceived: function (notification, payload, sender) {
-    if (notification == "GW_READY") {
-      if (sender.name == "Gateway") {
+    if (notification == "GA_READY") {
+      if (sender.name == "MMM-GoogleAssistant") {
         this.sendSocketNotification("INIT", this.config)
         this.camEngine()
         this.ready = true
