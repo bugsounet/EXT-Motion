@@ -1,7 +1,7 @@
 {
   "name": "EXT-Motion",
   "version": "1.3.0",
-  "rev": "240103",
+  "rev": "240308",
   "description": "Motion webcam detector plugin",
   "main": "EXT-Motion.js",
   "scripts": {
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "esbuild": "^0.20.1",
-    "glob": "^10.3.7"
+    "glob": "^10.3.10"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
