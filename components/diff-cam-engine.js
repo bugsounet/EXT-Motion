@@ -43,9 +43,9 @@ const DiffCamEngine = (function () {
    *
    * @param options
    */
-  function init(options) {
+  function init (options) {
     // sanity check
-    if (!options) throw "No options object provided";
+    if (!options) throw new Error("No options object provided");
 
     // incoming options with defaults
     video = options.video || document.createElement("video");
@@ -148,10 +148,10 @@ const DiffCamEngine = (function () {
   /**
    *
    */
-  function start() {
-    if (!stream) throw "Cannot start after init fail";
+  function start () {
+    if (!stream) throw new Error("Cannot start after init fail");
 
-    if (DiffCamEngine.started) return
+    if (DiffCamEngine.started) return;
 
     // streaming takes a moment to start
     video.addEventListener("canplay", startComplete);
@@ -161,7 +161,7 @@ const DiffCamEngine = (function () {
   /**
    *
    */
-  function startComplete() {
+  function startComplete () {
     video.removeEventListener("canplay", startComplete);
     captureInterval = setInterval(capture, captureIntervalTime);
     DiffCamEngine.started = true;
@@ -171,8 +171,8 @@ const DiffCamEngine = (function () {
   /**
    *
    */
-  function stop() {
-    if (!DiffCamEngine.started) return
+  function stop () {
+    if (!DiffCamEngine.started) return;
     clearInterval(captureInterval);
     video.src = "";
     motionContext.clearRect(0, 0, diffWidth, diffHeight);
@@ -184,9 +184,9 @@ const DiffCamEngine = (function () {
   /**
    *
    */
-  function destroy() {
-    stream.getTracks().forEach(track => track.stop())
-    stop()
+  function destroy () {
+    stream.getTracks().forEach((track) => track.stop());
+    stop();
     DiffCamEngine.initialized = false;
     destroyCompleteCallback();
   }
@@ -194,7 +194,7 @@ const DiffCamEngine = (function () {
   /**
    *
    */
-  function capture() {
+  function capture () {
     // save a full-sized copy of capture
     captureContext.drawImage(video, 0, 0, captureWidth, captureHeight);
     const captureImageData = captureContext.getImageData(0, 0, captureWidth, captureHeight);
@@ -223,12 +223,12 @@ const DiffCamEngine = (function () {
         hasMotion: diff.score >= scoreThreshold,
         motionBox: diff.motionBox,
         motionPixels: diff.motionPixels,
-        getURL: function () {
+        getURL () {
           return getCaptureUrl(this.imageData);
         },
-        checkMotionPixel: function (x, y) {
+        checkMotionPixel (x, y) {
           return checkMotionPixel(this.motionPixels, x, y);
-        },
+        }
       });
     }
 
@@ -243,7 +243,7 @@ const DiffCamEngine = (function () {
    * @param diffImageData
    * @returns {{score: number, motionBox: (*|{x: {min: *, max: *}, y: {min: *, max: *}}|undefined), motionPixels: *[]}}
    */
-  function processDiff(diffImageData) {
+  function processDiff (diffImageData) {
     const rgba = diffImageData.data;
 
     // pixel adjustments are done by reference directly on diffImageData
@@ -274,7 +274,7 @@ const DiffCamEngine = (function () {
     return {
       score: score,
       motionBox: score > scoreThreshold ? motionBox : undefined,
-      motionPixels: motionPixels,
+      motionPixels: motionPixels
     };
   }
 
@@ -283,10 +283,10 @@ const DiffCamEngine = (function () {
    * @param pixelIndex
    * @returns {{x: number, y: number}}
    */
-  function calculateCoordinates(pixelIndex) {
+  function calculateCoordinates (pixelIndex) {
     return {
       x: pixelIndex % diffWidth,
-      y: Math.floor(pixelIndex / diffWidth),
+      y: Math.floor(pixelIndex / diffWidth)
     };
   }
 
@@ -297,11 +297,11 @@ const DiffCamEngine = (function () {
    * @param y
    * @returns {*|{x: {min: *, max: *}, y: {min: *, max: *}}}
    */
-  function calculateMotionBox(currentMotionBox, x, y) {
+  function calculateMotionBox (currentMotionBox, x, y) {
     // init motion box on demand
     let motionBox = currentMotionBox || {
       x: { min: coords.x, max: x },
-      y: { min: coords.y, max: y },
+      y: { min: coords.y, max: y }
     };
 
     motionBox.x.min = Math.min(motionBox.x.min, x);
@@ -319,7 +319,7 @@ const DiffCamEngine = (function () {
    * @param y
    * @returns {*}
    */
-  function calculateMotionPixels(motionPixels, x, y) {
+  function calculateMotionPixels (motionPixels, x, y) {
     motionPixels[x] = motionPixels[x] || [];
     motionPixels[x][y] = true;
 
@@ -331,12 +331,12 @@ const DiffCamEngine = (function () {
    * @param captureImageData
    * @returns {string | null}
    */
-  function getCaptureUrl(captureImageData) {
+  function getCaptureUrl (captureImageData) {
     // may as well borrow captureCanvas
     captureContext.putImageData(captureImageData, 0, 0);
     //image mime type
     //ref: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-    if (imageMimeType == "image/jpeg") {
+    if (imageMimeType === "image/jpeg") {
       return captureCanvas.toDataURL("image/jpeg", jpegQuality);
     } else {
       return captureCanvas.toDataURL(imageMimeType);
@@ -350,7 +350,7 @@ const DiffCamEngine = (function () {
    * @param y
    * @returns {*}
    */
-  function checkMotionPixel(motionPixels, x, y) {
+  function checkMotionPixel (motionPixels, x, y) {
     return motionPixels && motionPixels[x] && motionPixels[x][y];
   }
 
@@ -358,7 +358,7 @@ const DiffCamEngine = (function () {
    *
    * @returns {*}
    */
-  function getPixelDiffThreshold() {
+  function getPixelDiffThreshold () {
     return pixelDiffThreshold;
   }
 
@@ -366,7 +366,7 @@ const DiffCamEngine = (function () {
    *
    * @param val
    */
-  function setPixelDiffThreshold(val) {
+  function setPixelDiffThreshold (val) {
     pixelDiffThreshold = val;
   }
 
@@ -374,7 +374,7 @@ const DiffCamEngine = (function () {
    *
    * @returns {*}
    */
-  function getScoreThreshold() {
+  function getScoreThreshold () {
     return scoreThreshold;
   }
 
@@ -382,7 +382,7 @@ const DiffCamEngine = (function () {
    *
    * @param val
    */
-  function setScoreThreshold(val) {
+  function setScoreThreshold (val) {
     scoreThreshold = val;
   }
 
@@ -401,7 +401,7 @@ const DiffCamEngine = (function () {
 
     // public status
     initialized: this.initialized,
-    started: this.started,
+    started: this.started
     
   };
 })();
