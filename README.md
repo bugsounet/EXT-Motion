@@ -10,8 +10,5 @@ This plugin an Extented plugin of `EXT-Screen`, it can't work by itself without 
 
 Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-Motion)
 
-## Support and Helping
-New forum and support for all @bugsounet modules is now localized [there](https://forum.bugsounet.fr) !
- 
 ## Donate
  [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TTHRH94Y4KL36&source=url), if you love this module !
